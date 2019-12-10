@@ -38,7 +38,7 @@ def configure_connector():
                 "table.whitelist": "stations",
                 "mode": "incrementing",
                 "incrementing.column.name": "stop_id",
-                "topic.prefix": "com.udacity.stations-",
+                "topic.prefix": "com.cta.stations.v1-",
                 "poll.interval.ms": "8640000",
             }
         }),
