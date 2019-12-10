@@ -30,12 +30,6 @@ class Producer:
         self.num_partitions = num_partitions
         self.num_replicas = num_replicas
 
-        #
-        #
-        # TODO: Configure the broker properties below. Make sure to reference the project README
-        # and use the Host URL for Kafka and Schema Registry!
-        #
-        #
         self.broker_properties = {
             'bootstrap.servers': 'PLAINTEXT://localhost:9092'
         }
@@ -45,7 +39,6 @@ class Producer:
             self.create_topic()
             Producer.existing_topics.add(self.topic_name)
 
-        # TODO: Configure the AvroProducer
         self.producer = AvroProducer(self.broker_properties,
                                      schema_registry=CachedSchemaRegistryClient('http://localhost:8081'),
                                      default_key_schema=self.key_schema,
@@ -54,22 +47,11 @@ class Producer:
 
     def create_topic(self):
         """Creates the producer topic if it does not already exist"""
-        #
-        #
-        # TODO: Write code that creates the topic for this producer if it does not already exist on
-        # the Kafka Broker.
-        #
-        #
         AdminClient(self.broker_properties)\
             .create_topics([NewTopic(self.topic_name, num_partitions=1)])
 
     def close(self):
         """Prepares the producer for exit by cleaning up the producer"""
-        #
-        #
-        # TODO: Write cleanup code for the Producer here
-        #
-        #
         self.producer.flush()
 
     def time_millis(self):

@@ -1,1 +1,6 @@
 /.idea/
+/consumers/venv/
+/producers/venv/
+/producers/.gitignore
+/poducers/__pycache__/
+/poducers/models/__pycache__/
