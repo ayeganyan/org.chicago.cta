@@ -19,6 +19,7 @@ class Lines:
 
     def process_message(self, message):
         """Processes a station message"""
+        print(message)
         if "org.chicago.cta.station" in message.topic():
             value = message.value()
             if message.topic() == STATIONS_TABLE:

@@ -45,7 +45,7 @@ class Turnstile(Producer):
         converted_time = int((timestamp - datetime(1970, 1, 1)) / timedelta(seconds=1))
         for entry in range(num_entries):
             self.producer.produce(
-                topic=f'org.chicago.cta.station.turnstile.{entry}.v1',
+                topic=f'org.chicago.cta.station.turnstile.v1',
                 key={"timestamp": converted_time},
                 value={
                     "station_id": self.station.station_id,

@@ -6,8 +6,6 @@ import requests
 
 import topic_check
 
-from topics import TURNSTILE_SUMMARY
-
 
 logger = logging.getLogger(__name__)
 
@@ -21,12 +19,12 @@ CREATE TABLE turnstile (
     station_name VARCHAR,
     line VARCHAR 
 ) WITH (
-    KAFKA_TOPIC='org.chicago.cta.station.turnstile.',
+    KAFKA_TOPIC='org.chicago.cta.station.turnstile.v1',
     VALUE_FORMAT='avro',
     KEY='station_id'
 );
 
-CREATE TABLE {TURNSTILE_SUMMARY}
+CREATE TABLE "TURNSTILE_SUMMARY"
 WITH (VALUE_FORMAT='json') AS
     SELECT station_id, COUNT(station_id) AS turnstile_count
     FROM turnstile

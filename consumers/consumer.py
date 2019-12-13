@@ -19,7 +19,7 @@ class KafkaConsumer:
         topic_name_pattern,
         message_handler,
         is_avro=True,
-        offset_earliest=False,
+        offset_earliest=True,
         sleep_secs=1.0,
         consume_timeout=0.1,
     ):
@@ -41,13 +41,12 @@ class KafkaConsumer:
         else:
             self.consumer = Consumer(self.broker_properties)
 
-        self.consumer.subscribe(["com.cta.stations.table.v1"], on_assign=self.on_assign)
+        self.consumer.subscribe([topic_name_pattern], on_assign=self.on_assign)
 
     def on_assign(self, consumer, partitions):
         """Callback for when topic assignment takes place"""
         for partition in partitions:
-            if self.offset_earliest:
-                partition.offset = confluent_kafka.OFFSET_BEGINNING
+                consumer.seek(partition)
 
         logger.info("partitions assigned for %s", self.topic_name_pattern)
         consumer.assign(partitions)
@@ -63,7 +62,7 @@ class KafkaConsumer:
     def _consume(self):
         """Polls for a message. Returns 1 if a message was received, 0 otherwise"""
         try:
-            message = self.consumer.poll(timeout_ms=self.consume_timeout)
+            message = self.consumer.poll(1.0)
         except SerializerError as er:
             logger.error(f"Error while consuming data: {er.message}")
             return 0
