@@ -6,6 +6,8 @@ import requests
 
 import topic_check
 
+from topics import TURNSTILE_SUMMARY
+
 
 logger = logging.getLogger(__name__)
 
@@ -13,18 +15,18 @@ logger = logging.getLogger(__name__)
 KSQL_URL = "http://localhost:8088"
 
 
-KSQL_STATEMENT = """
+KSQL_STATEMENT = f"""
 CREATE TABLE turnstile (
     station_id INT,
     station_name VARCHAR,
     line VARCHAR 
 ) WITH (
-    KAFKA_TOPIC='com.cta.station.turnstile.v1',
+    KAFKA_TOPIC='org.chicago.cta.station.turnstile.',
     VALUE_FORMAT='avro',
     KEY='station_id'
 );
 
-CREATE TABLE turnstile_summary
+CREATE TABLE {TURNSTILE_SUMMARY}
 WITH (VALUE_FORMAT='json') AS
     SELECT station_id, COUNT(station_id) AS turnstile_count
     FROM turnstile

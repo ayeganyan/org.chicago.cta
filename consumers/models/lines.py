@@ -3,7 +3,7 @@ import json
 import logging
 
 from models import Line
-
+from topics import STATIONS_TABLE
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +21,7 @@ class Lines:
         """Processes a station message"""
         if "org.chicago.cta.station" in message.topic():
             value = message.value()
-            if message.topic() == "org.chicago.cta.stations.table.v1":
+            if message.topic() == STATIONS_TABLE:
                 value = json.loads(value)
             if value["line"] == "green":
                 self.green_line.process_message(message)

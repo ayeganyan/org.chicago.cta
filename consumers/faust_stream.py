@@ -1,8 +1,8 @@
 """Defines trends calculations for stations"""
 import logging
-
 import faust
 
+from topics import STATIONS_TABLE
 
 logger = logging.getLogger(__name__)
 
@@ -30,14 +30,15 @@ class TransformedStation(faust.Record):
 
 
 app = faust.App("stations-stream", broker="kafka://localhost:9092", store="memory://")
-topic = app.topic("com.cta.stations.v1-stations", value_type=Station)
-out_topic = app.topic("com.cta.stations.v1.transformed", partitions=1)
+topic = app.topic("org.chicago.cta.stations.v1-stations", value_type=Station)
+out_topic = app.topic(STATIONS_TABLE, partitions=1)
 table = app.Table(
-   "com.cta.stations.v1.transformed",
-   default=TransformedStation,
-   partitions=1,
-   changelog_topic=out_topic,
+    STATIONS_TABLE,
+    default=TransformedStation,
+    partitions=1,
+    changelog_topic=out_topic,
 )
+
 
 @app.agent(topic)
 async def process_stations(stations):

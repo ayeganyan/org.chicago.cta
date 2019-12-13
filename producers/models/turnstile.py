@@ -30,7 +30,7 @@ class Turnstile(Producer):
         )
 
         super().__init__(
-            f"com.cta.station.turnstile.v1",
+            'org.chicago.cta.station.turnstile.v1',
             key_schema=Turnstile.key_schema,
             value_schema=Turnstile.value_schema,
             num_partitions=2,
@@ -45,7 +45,7 @@ class Turnstile(Producer):
         converted_time = int((timestamp - datetime(1970, 1, 1)) / timedelta(seconds=1))
         for entry in range(num_entries):
             self.producer.produce(
-                topic=self.topic_name,
+                topic=f'org.chicago.cta.station.turnstile.{entry}.v1',
                 key={"timestamp": converted_time},
                 value={
                     "station_id": self.station.station_id,
