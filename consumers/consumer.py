@@ -32,7 +32,8 @@ class KafkaConsumer:
 
         self.broker_properties = {
             'bootstrap.servers': 'PLAINTEXT://localhost:9094',
-            'group.id': 'transit_status'
+            'group.id': topic_name_pattern,
+            'default.topic.config': {'auto.offset.reset': 'earliest'}
         }
 
         if is_avro is True:
